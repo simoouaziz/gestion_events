@@ -6,12 +6,20 @@ import ma.emsi.jwt.payload.requests.LoginRequest;
 import ma.emsi.jwt.payload.requests.SignupRequest;
 import ma.emsi.jwt.responses.MessageResponse;
 import ma.emsi.jwt.responses.UserInfoResponse;
+import ma.emsi.model.ERole;
+import ma.emsi.model.Role;
 import ma.emsi.model.User;
+import ma.emsi.repository.RoleRepository;
 import ma.emsi.repository.UserRepository;
 import ma.emsi.servicelmpl.UserDetailsImpl;
-import ma.emsi.repository.UserRepository;
 
 import org.springframework.http.HttpHeaders;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +45,9 @@ public class AuthController {
 	UserRepository userRepository;
 
 	@Autowired
+	RoleRepository roleRepository;
+
+	@Autowired
 	PasswordEncoder encoder;
 
 	@Autowired
@@ -54,8 +65,12 @@ public class AuthController {
 
 		ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+				.collect(Collectors.toList());
+		
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-				.body(new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
+				.body(new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
+						userDetails.getNom(), userDetails.getPrenom(), roles));
 	}
 
 	@PostMapping("/signup")
@@ -69,11 +84,33 @@ public class AuthController {
 		}
 
 		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-				encoder.encode(signUpRequest.getPassword()));
-		// Save the user
-		userRepository.save(user);
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+				encoder.encode(signUpRequest.getPassword()), signUpRequest.getNom(), signUpRequest.getPrenom());
 
+		Set<String> strRoles = signUpRequest.getRole();
+		Set<Role> roles = new HashSet<>();
+
+		if (strRoles != null) {
+			strRoles.forEach(role -> {
+				switch (role) {
+				case "manager":
+					Role managerRole = roleRepository.findByName(ERole.ROLE_MANAGER)
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(managerRole);
+
+					break;
+				case "etudiant":
+					Role etudiantRole = roleRepository.findByName(ERole.ROLE_ETUDIANT)
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(etudiantRole);
+
+					break;
+				}
+			});
+		}
+		user.setRoles(roles);
+		userRepository.save(user);
+
+		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
 
 	@PostMapping("/signout")

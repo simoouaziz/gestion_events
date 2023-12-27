@@ -1,5 +1,9 @@
 package ma.emsi.repository;
 
-public interface ComiteOrganisationRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import ma.emsi.model.ComiteOrganisation;
+
+public interface ComiteOrganisationRepository extends JpaRepository<ComiteOrganisation, Integer>{
 
 }

@@ -1,14 +1,12 @@
 package ma.emsi.jwt.responses;
 
-import java.util.List;
-
 public class UserInfoResponse {
 	private int id;
 	private String username;
 	private String email;
 	private String nom;
 	private String prenom;
-	private List<String> roles;
+	private String roles;
 
 	public int getId() {
 		return id;
@@ -34,11 +32,11 @@ public class UserInfoResponse {
 		this.email = email;
 	}
 
-	public List<String> getRoles() {
+	public String getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(String roles) {
 		this.roles = roles;
 	}
 
@@ -58,14 +56,14 @@ public class UserInfoResponse {
 		this.prenom = prenom;
 	}
 
-	public UserInfoResponse(int id, String username, String email, String nom, String prenom, List<String> roles) {
+	public UserInfoResponse(int id, String username, String email, String nom, String prenom, String role) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.roles = roles;
+		this.roles = role;
 	}
 
 }

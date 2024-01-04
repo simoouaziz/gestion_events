@@ -6,13 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -35,9 +30,20 @@ public class User {
 	@NotBlank(message = "Le nom d'utilisateur ne peut pas être vide")
 	private String username;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	private Role role;
+
+	@Transient
+	private String roleName;
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 
 	public int getId() {
 		return id;
@@ -100,18 +106,18 @@ public class User {
 		this.username = username;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public User(int id, String nom, String prenom, String telephone,
-			@NotBlank(message = "L'e-mail ne peut pas être vide") @Email(message = "L'e-mail doit être au format valide") String email,
-			@Size(min = 8, message = "Le mot de passe doit avoir au moins 8 caractères") @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).*$", message = "Le mot de passe doit contenir des chiffres, des lettres et des caractères spéciaux") String password,
-			@NotBlank(message = "Le nom d'utilisateur ne peut pas être vide") String username) {
+			@NotBlank(message = "L'e-mail ne peut pas être vide") String email,
+			@Size(min = 8, message = "Le mot de passe doit avoir au moins 8 caractères") String password,
+			@NotBlank(message = "Le nom d'utilisateur ne peut pas être vide") String username, Role role) {
 		super();
 		this.id = id;
 		this.nom = nom;
@@ -120,6 +126,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.username = username;
+		this.role = role;
 	}
 
 	public User(@NotBlank(message = "Le nom d'utilisateur ne peut pas être vide") String username,
@@ -141,6 +148,17 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.username = username;
+	}
+
+	public User(String nom, String prenom, String telephone, String email, String password, String username,
+			String roleName) {
+		this.nom = nom;
+		this.prenom = prenom;
+		this.telephone = telephone;
+		this.email = email;
+		this.password = password;
+		this.username = username;
+		this.roleName = roleName;
 	}
 
 }

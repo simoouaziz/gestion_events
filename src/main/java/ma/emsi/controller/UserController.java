@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ma.emsi.model.User;
 import ma.emsi.service.UserService;
 
-
 @RestController
 @RequestMapping("/gestion_events")
 @CrossOrigin(origins = "*")
@@ -25,8 +24,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping(value = "/user", produces = { "application/json", "application/xml" }, consumes = {
-			"application/json", "application/xml" })
+	@PostMapping(value = "/user", produces = { "application/json", "application/xml" }, consumes = { "application/json",
+			"application/xml" })
 	public ResponseEntity<Void> add(@RequestBody User u) {
 		userService.create(u);
 		return ResponseEntity.noContent().build();
@@ -34,16 +33,20 @@ public class UserController {
 
 	@GetMapping(value = "/user/id/{id}", produces = { "application/json", "application/xml" }, consumes = {
 			"application/json", "application/xml" })
-	public ResponseEntity<User> findarticle(@PathVariable int id) {
+	public ResponseEntity<User> findById(@PathVariable int id) {
 		User result = userService.findById(id);
 		return ResponseEntity.ok().body(result);
 	}
 
+	@GetMapping(value = "/user", produces = { "application/json", "application/xml" })
+	public ResponseEntity<List<User>> findAll() {
+		List<User> result = userService.findAll();
+		return ResponseEntity.ok().body(result);
 
+	}
 
-
-	@PutMapping(value = "/user", produces = { "application/json", "application/xml" }, consumes = {
-			"application/json", "application/xml" })
+	@PutMapping(value = "/user", produces = { "application/json", "application/xml" }, consumes = { "application/json",
+			"application/xml" })
 	public ResponseEntity<Void> update(@RequestBody User u) {
 		userService.update(u);
 		return ResponseEntity.noContent().build();
@@ -55,5 +58,3 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 }
-
-

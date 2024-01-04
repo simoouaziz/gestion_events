@@ -1,13 +1,12 @@
 package ma.emsi.jwt.payload.requests;
 
-import java.util.Set;
 import jakarta.validation.constraints.*;
 
 public class SignupRequest {
 	private String nom;
 
 	private String prenom;
-	
+
 	@NotBlank
 	@Size(min = 3, max = 20)
 	private String username;
@@ -17,11 +16,13 @@ public class SignupRequest {
 	@Email
 	private String email;
 
-	private Set<String> role;
+	private String roleName;
 
 	@NotBlank
 	@Size(min = 6, max = 40)
 	private String password;
+
+	private String telephone;
 
 	public String getUsername() {
 		return username;
@@ -47,12 +48,12 @@ public class SignupRequest {
 		this.password = password;
 	}
 
-	public Set<String> getRole() {
-		return this.role;
+	public String getRoleName() {
+		return this.roleName;
 	}
 
-	public void setRole(Set<String> role) {
-		this.role = role;
+	public void setRoleName(String role) {
+		this.roleName = role;
 	}
 
 	public String getNom() {
@@ -69,6 +70,14 @@ public class SignupRequest {
 
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 }

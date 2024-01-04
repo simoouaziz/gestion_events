@@ -12,5 +12,5 @@ public interface MoyenDeTransportRepository extends JpaRepository<MoyenDeTranspo
     List<MoyenDeTransport> findByType(String type);
 
     // Rechercher tous les moyens de transport disponibles (non utilisés dans une demande)
-    List<MoyenDeTransport> findUnusedTransports();
+   // List<MoyenDeTransport> findUnusedTransports();
 }

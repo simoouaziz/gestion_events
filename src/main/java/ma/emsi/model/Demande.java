@@ -2,15 +2,19 @@ package ma.emsi.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Demande")
 public class Demande {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private int id;
 	private String titre;
 	private String description;
@@ -19,8 +23,68 @@ public class Demande {
 
 	private LocalDate dateFin;
 	private Integer budget;
+	@Column
 	private String etat;
 	private String type;
+	private String local;
+	private Boolean moyendetransport;
+	private int effectif;
+
+	public Demande(int id, String titre, String description, LocalDate dateDebut, LocalDate dateFin, Integer budget,
+			String etat, String type, String local, Boolean moyendetransport, int effectif) {
+		super();
+		this.id = id;
+		this.titre = titre;
+		this.description = description;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.budget = budget;
+		this.etat = etat;
+		this.type = type;
+		this.local = local;
+		this.moyendetransport = moyendetransport;
+		this.effectif = effectif;
+	}
+
+	public LocalDate getDateDebut() {
+		return dateDebut;
+	}
+
+	public void setDateDebut(LocalDate dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+	public LocalDate getDateFin() {
+		return dateFin;
+	}
+
+	public void setDateFin(LocalDate dateFin) {
+		this.dateFin = dateFin;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
+	}
+
+	public Boolean getMoyendetransport() {
+		return moyendetransport;
+	}
+
+	public void setMoyendetransport(Boolean moyendetransport) {
+		this.moyendetransport = moyendetransport;
+	}
+
+	public int getEffectif() {
+		return effectif;
+	}
+
+	public void setEffectif(int effectif) {
+		this.effectif = effectif;
+	}
 
 	public int getId() {
 		return id;
@@ -83,19 +147,6 @@ public class Demande {
 	}
 
 	public void setType(String type) {
-		this.type = type;
-	}
-
-	public Demande(int id, String titre, String description, LocalDate dateDebut, LocalDate dateFin, Integer budget,
-			String etat, String type) {
-		super();
-		this.id = id;
-		this.titre = titre;
-		this.description = description;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.budget = budget;
-		this.etat = etat;
 		this.type = type;
 	}
 

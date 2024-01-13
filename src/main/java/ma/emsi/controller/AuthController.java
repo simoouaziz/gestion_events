@@ -93,4 +93,5 @@ public class AuthController {
 		return new User(signUpRequest.getNom(), signUpRequest.getPrenom(), signUpRequest.getTelephone(),
 				signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getUsername(), strRole);
 	}
+
 }

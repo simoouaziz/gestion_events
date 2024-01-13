@@ -17,4 +17,5 @@ public interface UserService {
 	public User findById(int id);
 
 	public void addUser(User user, String roleName);
+
 }

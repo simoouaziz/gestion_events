@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ma.emsi.model.Demande;
+import ma.emsi.model.MotifRejet;
+import ma.emsi.model.RejectedDemandeDTO;
 import ma.emsi.service.DemandeService;
 
 @RestController
-@RequestMapping("/demande")
+@RequestMapping("gestion_events/demande")
 public class DemandeController {
 
 	@Autowired
@@ -66,10 +67,13 @@ public class DemandeController {
 	}
 
 	@PutMapping("/rejeter")
-	public ResponseEntity<Void> rejeterDemande(@RequestBody Demande demande) {
-		Demande d = demandeService.getDemandeById(demande.getId());
-		if (d != null) {
-			demandeService.RejeterDemande(d);
+	public ResponseEntity<Void> rejeterDemande(@RequestBody RejectedDemandeDTO rejectedDemandeDTO) {
+		Demande demande = demandeService.getDemandeById(rejectedDemandeDTO.getDemandeId());
+		if (demande != null) {
+			MotifRejet motifRejet = new MotifRejet();
+			motifRejet.setTexte(rejectedDemandeDTO.getMotifTexte());
+			demandeService.RejeterDemande(demande, motifRejet);
+
 			return ResponseEntity.noContent().build();
 		} else {
 			return ResponseEntity.notFound().build();

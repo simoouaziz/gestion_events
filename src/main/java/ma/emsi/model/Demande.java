@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,13 +16,10 @@ import jakarta.persistence.Table;
 public class Demande {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private int id;
 	private String titre;
 	private String description;
-
 	private LocalDate dateDebut;
-
 	private LocalDate dateFin;
 	private Integer budget;
 	@Column
@@ -30,8 +29,17 @@ public class Demande {
 	private Boolean moyendetransport;
 	private int effectif;
 
+	@ManyToOne
+	@JoinColumn(name = "comite_id")
+	private ComiteOrganisation comiteOrganisation;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	public Demande(int id, String titre, String description, LocalDate dateDebut, LocalDate dateFin, Integer budget,
-			String etat, String type, String local, Boolean moyendetransport, int effectif) {
+			String etat, String type, String local, Boolean moyendetransport, int effectif,
+			ComiteOrganisation comiteOrganisation, User user) {
 		super();
 		this.id = id;
 		this.titre = titre;
@@ -44,6 +52,8 @@ public class Demande {
 		this.local = local;
 		this.moyendetransport = moyendetransport;
 		this.effectif = effectif;
+		this.comiteOrganisation = comiteOrganisation;
+		this.user = user;
 	}
 
 	public LocalDate getDateDebut() {
@@ -148,6 +158,22 @@ public class Demande {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public ComiteOrganisation getComiteOrganisation() {
+		return comiteOrganisation;
+	}
+
+	public void setComiteOrganisation(ComiteOrganisation comiteOrganisation) {
+		this.comiteOrganisation = comiteOrganisation;
 	}
 
 	public Demande() {

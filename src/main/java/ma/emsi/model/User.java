@@ -36,6 +36,7 @@ public class User {
 
 	@Transient
 	private String roleName;
+	
 
 	public String getRoleName() {
 		return roleName;

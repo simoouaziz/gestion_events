@@ -3,6 +3,7 @@ package ma.emsi.service;
 import java.util.List;
 
 import ma.emsi.model.Demande;
+import ma.emsi.model.MotifRejet;
 
 public interface DemandeService {
 	void createDemande(Demande demande);
@@ -11,7 +12,7 @@ public interface DemandeService {
 
 	void AccepterDemande(Demande demande);
 
-	void RejeterDemande(Demande demande);
+	void RejeterDemande(Demande demande, MotifRejet motifRejet);
 
 	void add(Demande demande);
 
